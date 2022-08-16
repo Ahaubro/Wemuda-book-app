@@ -2,7 +2,6 @@
 {
     public class BookDto
     {
-
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -14,7 +13,7 @@
         public DateTime ReleaseDate { get; set; }
     }
 
-    // CREATE
+    // CREATE REQUEST
     public class BookCreateRequestDto
     {
         public string Title { get; set; }
@@ -26,6 +25,7 @@
         public DateTime ReleaseDate { get; set; }
     }
 
+    // CREATE RESPONSE
     public class BookCreateResponseDto
     {
         public string Title { get; set; }
@@ -39,7 +39,7 @@
         public string StatusText { get; set; }
     }
 
-    // UPDATE
+    // UPDATE REQUEST
     public class BookUpdateRequestDto
     {
         public string Title { get; set; }
@@ -51,31 +51,34 @@
         public DateTime ReleaseDate { get; set; }
     }
 
+    // UPDATE RESPONSE
     public class BookUpdateResponseDto
     { 
         public string Title { get; set; }
         public string StatusText { get; set; }
     }
 
-    // GET ALL
-
+    // GET ALL REQUEST
     public class BookGetAllRequestDto
     { 
         
     }
 
+    // GET ALL RESPONSE
     public class BookGetAllResponseDto
     {
         public IEnumerable<BookDto> Books { get; set; }
     }
 
-    // GET
 
+    // GET BY ID REQUEST
     public class BookGetRequestDto
     { 
     
     }
 
+
+    // GET BY ID RESPONSE
     public class BookGetResponseDto
     {
         public int Id { get; set; }
@@ -89,12 +92,13 @@
         public DateTime ReleaseDate { get; set; }
     }
 
-    // DELETE
+    // DELETE REQUEST
     public class BookDeleteRequestDto
     { 
         
     }
 
+    // DELETE RESPONSE
     public class BookDeleteResponseDto
     {
         public string StatusText { get; set; }

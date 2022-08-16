@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Wemuda_book_app.Data;
+using Wemuda_book_app.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,10 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
-var app = builder.Build();
+//HUSK - Inject vores service klasse !!
+builder.Services.AddTransient<IBookService, BookService>();
 
+var app = builder.Build();
 
 app.UseHttpsRedirection();
 

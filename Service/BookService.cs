@@ -13,8 +13,8 @@ namespace Wemuda_book_app.Service
         Task<BookCreateResponseDto> Create(BookCreateRequestDto dto);
         Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int id);
         Task<BookDeleteResponseDto> Delete(int id);
-        //Task<BookGetResponseDto> GetById(int id);
-        //Task<BookGetAllResponseDto> GetAll();
+        Task<BookGetResponseDto> GetById(int id);
+        Task<BookGetAllResponseDto> GetAll();
 
     }
 
@@ -22,6 +22,12 @@ namespace Wemuda_book_app.Service
     {
 
         private readonly ApplicationDBContext _context;
+
+        public BookService(ApplicationDBContext context)
+        {
+            _context = context;
+        }
+
 
         // CREATE
         public async Task<BookCreateResponseDto> Create(BookCreateRequestDto dto)
@@ -53,7 +59,8 @@ namespace Wemuda_book_app.Service
 
             var book = await _context.Books.FirstOrDefaultAsync(d => d.Id == id);
 
-            book.Deleted = true;
+            //INSERT EXCEPTION
+
 
             _context.Books.Update(book);
 
@@ -70,6 +77,8 @@ namespace Wemuda_book_app.Service
         public async Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int id)
         {
             var book = await _context.Books.FirstOrDefaultAsync(d => d.Id == id);
+
+            //INSERT EXCEPTION
 
             book.Title = dto.Title;
             book.Author = dto.Author;
@@ -88,12 +97,43 @@ namespace Wemuda_book_app.Service
 
         }
 
-        // GET ALL
-
-
-
-
         //GET ONE
+        public async Task<BookGetResponseDto> GetById(int id)
+        {
+            var book = await _context.Books.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+
+            //INSERT EXCEPTION
+
+            return new BookGetResponseDto
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                Genre = book.Genre,
+                ReleaseDate = book.ReleaseDate
+
+            };
+        }
+
+
+        //GET ALL
+        public async Task<BookGetAllResponseDto> GetAll()
+        {
+      
+            var allBooks = _context.Books.ToList();
+
+            return new BookGetAllResponseDto
+            {
+                Books = allBooks.Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Genre = b.Genre,
+                    ReleaseDate = b.ReleaseDate
+                })
+            };
+        }
 
 
     }
