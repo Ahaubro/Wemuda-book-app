@@ -20,13 +20,23 @@ namespace Wemuda_book_app.Shared
         public string Username { get; set; }
         public string Token { get; set; }
 
-        public AuthenticateResponseDto(User user, string token)
-        {
-            Id = user.Id;
-            FirstName = user.FirstName;
-            LastName = user.LastName;
-            Username = user.Username;
-            Token = token;
-        }
+    }
+
+    public class AuthCreateRequestDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+    }
+
+    // CREATE RESPONSE
+    public class AuthCreateResponseDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Username { get; set; }
+        public string StatusText { get; set; }
     }
 }
