@@ -62,7 +62,7 @@ namespace Wemuda_book_app.Service
             //INSERT EXCEPTION
 
 
-            _context.Books.Update(book);
+            _context.Books.Remove(book);
 
             await _context.SaveChangesAsync();
 
