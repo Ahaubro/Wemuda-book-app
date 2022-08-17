@@ -16,17 +16,18 @@ namespace Wemuda_book_app.Controllers
             _userService = userService;
         }
 
+        //[Produces("application/json")]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthenticateRequestDto model)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestDto model)
         {
-            var response = _userService.Authenticate(model);
+            var response = await _userService.Authenticate(model);
 
             if (response == null)
                 return BadRequest(new {
                     message = "Username or password is incorrect"
                 });
 
-            return Ok("Okay");
+            return Ok(response);
         }
 
         [Authorize]
@@ -45,5 +46,6 @@ namespace Wemuda_book_app.Controllers
         {
             return await _userService.Create(dto);
         }
+
     }
 }

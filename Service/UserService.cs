@@ -21,7 +21,7 @@ namespace Wemuda_book_app.Service
     }
     public class UserService : IUserService
     {
-     
+
         private readonly AppSettings _appSettings;
         private readonly ApplicationDBContext _context;
         private List<User> _users;
@@ -35,17 +35,17 @@ namespace Wemuda_book_app.Service
 
         public async Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model)
         {
-            
+
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Username.Equals(model.Username) && u.Password.Equals(model.Password));
 
-          
+
             // return null if user not found
-            if (user == null) return null;
+            if (user == null) return new AuthenticateResponseDto { };
 
             // authentication successful so generate jwt token
             var token = generateJwtToken(user);
 
-           
+
             return new AuthenticateResponseDto
             {
                 Id = user.Id,
@@ -63,7 +63,8 @@ namespace Wemuda_book_app.Service
 
         public User GetById(int id)
         {
-            return _users.FirstOrDefault(x => x.Id == id);
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            return user;
         }
 
         private string generateJwtToken(User user)
@@ -73,7 +74,7 @@ namespace Wemuda_book_app.Service
             var key = Encoding.UTF8.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("name", user.FirstName), new Claim("username", user.Username) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -105,3 +106,4 @@ namespace Wemuda_book_app.Service
         }
     }
 }
+
