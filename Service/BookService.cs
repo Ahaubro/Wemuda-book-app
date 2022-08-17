@@ -70,7 +70,6 @@ namespace Wemuda_book_app.Service
             {
                 StatusText = "BookDeleted"
             };
-
         }
 
         // UPDATE

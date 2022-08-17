@@ -15,9 +15,11 @@ namespace Wemuda_book_app.Service
     public interface IUserService
     {
         Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model);
-        IEnumerable<User> GetAll();
-        User GetById(int id);
+        Task<AuthGetAllResponseDto> GetAll();
+        Task<AuthGetByIdResponseDto> GetById(int id);
         Task<AuthCreateResponseDto> Create(AuthCreateRequestDto dto);
+
+        Task<AuthDeleteResponseDto> Delete(int id);
     }
     public class UserService : IUserService
     {
@@ -33,6 +35,8 @@ namespace Wemuda_book_app.Service
 
         }
 
+
+        //AUTHENTICATE
         public async Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model)
         {
 
@@ -56,17 +60,42 @@ namespace Wemuda_book_app.Service
             };
         }
 
-        public IEnumerable<User> GetAll()
+
+        // GET ALL
+        public async Task<AuthGetAllResponseDto> GetAll()
         {
-            return _users;
+            var allUsers = _context.Users.ToList();
+
+            return new AuthGetAllResponseDto
+            {
+                Users = allUsers.Select(b => new AuthDTO
+                {
+                    Id = b.Id,
+                    FirstName = b.FirstName,
+                    LastName = b.LastName,
+                    Username = b.Username
+                })
+            };
         }
 
-        public User GetById(int id)
+
+        // GET BY ID
+        public async Task<AuthGetByIdResponseDto> GetById(int id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id);
-            return user;
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+
+
+            return new AuthGetByIdResponseDto
+            { 
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Username = user.Username,
+                StatusText = "UserFound"
+            };
         }
 
+
+        // GENERATES TOKEN FOR AUTH
         private string generateJwtToken(User user)
         {
             // generate token that is valid for 7 days
@@ -103,6 +132,27 @@ namespace Wemuda_book_app.Service
                 LastName = entity.Entity.LastName,
                 Username = entity.Entity.Username,
             };
+        }
+
+
+        // DELETE
+        public async Task<AuthDeleteResponseDto> Delete(int id)
+        {
+
+            var user = await _context.Users.FirstOrDefaultAsync(d => d.Id == id);
+
+            //INSERT EXCEPTION
+
+
+            _context.Users.Remove(user);
+
+            await _context.SaveChangesAsync();
+
+            return new AuthDeleteResponseDto
+            {
+                StatusText = "UserDeleted"
+            };
+
         }
     }
 }

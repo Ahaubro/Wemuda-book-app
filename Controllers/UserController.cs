@@ -16,7 +16,8 @@ namespace Wemuda_book_app.Controllers
             _userService = userService;
         }
 
-        //[Produces("application/json")]
+
+        // AUTHENTICATE
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestDto model)
         {
@@ -30,21 +31,41 @@ namespace Wemuda_book_app.Controllers
             return Ok(response);
         }
 
+
+        // GET ALL USERS - (Virker self kun når [Authorize] er udkommenteret)
         [Authorize]
+        [Produces("application/json")]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<AuthGetAllResponseDto> GetAll()
         {
-            var users = _userService.GetAll();
-            return Ok(users);
+            return await _userService.GetAll();
         }
 
 
-        // CREATE
+        // GET USER BY ID
+        [Produces("application/json")]
+        [HttpGet("{id:int}")]
+        public async Task<AuthGetByIdResponseDto> GetById(int id)
+        {
+            return await _userService.GetById(id);
+        }
+
+
+        // CREATE USER
         [Produces("application/json")]
         [HttpPost]
         public async Task<AuthCreateResponseDto> Create([FromBody] AuthCreateRequestDto dto)
         {
             return await _userService.Create(dto);
+        }
+
+
+        //DELETE USER
+        [Produces("application/json")]
+        [HttpDelete("{id:int}")]
+        public async Task<AuthDeleteResponseDto> Delete(int id)
+        {
+            return await _userService.Delete(id);
         }
 
     }
