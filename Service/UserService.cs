@@ -18,7 +18,6 @@ namespace Wemuda_book_app.Service
         Task<AuthGetAllResponseDto> GetAll();
         Task<AuthGetByIdResponseDto> GetById(int id);
         Task<AuthCreateResponseDto> Create(AuthCreateRequestDto dto);
-
         Task<AuthDeleteResponseDto> Delete(int id);
     }
     public class UserService : IUserService

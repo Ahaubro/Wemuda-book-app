@@ -45,6 +45,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCors(configuration =>
+                configuration.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 //app.UseAuthentication();
 
 app.UseMiddleware<JwtMiddleware>();
