@@ -39,6 +39,7 @@ namespace Wemuda_book_app.Shared
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
 
     }
@@ -93,5 +94,15 @@ namespace Wemuda_book_app.Shared
         public string StatusText { get; set; }
     }
 
+    public class ChangePasswordRequestDto
+    {
+        public int UserId { get; set; }
+        public string NewPassword { get; set; }
+    }
+
+    public class ChangePasswordResponseDto
+    {
+        public string StatusText { get; set; }
+    }
 
 }

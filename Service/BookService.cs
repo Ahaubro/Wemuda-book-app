@@ -16,6 +16,8 @@ namespace Wemuda_book_app.Service
         Task<BookGetResponseDto> GetById(int id);
         Task<BookGetAllResponseDto> GetAll();
 
+        Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
+
     }
 
     public class BookService : IBookService
@@ -134,6 +136,14 @@ namespace Wemuda_book_app.Service
             };
         }
 
+        public async Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto)
+        {
+            
+            return new BookAddToUserResponseDto
+            {
+                StatusText = "Nothing Happens Yet" //"BookAddedToUser"
+            };
+        }
 
     }
 }

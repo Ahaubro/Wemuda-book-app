@@ -19,6 +19,7 @@ namespace Wemuda_book_app.Service
         Task<AuthGetByIdResponseDto> GetById(int id);
         Task<AuthCreateResponseDto> Create(AuthCreateRequestDto dto);
         Task<AuthDeleteResponseDto> Delete(int id);
+        Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto);
     }
     public class UserService : IUserService
     {
@@ -119,6 +120,7 @@ namespace Wemuda_book_app.Service
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Username = dto.Username,
+                Email = dto.Email,
                 Password = dto.Password
             });
 
@@ -153,6 +155,22 @@ namespace Wemuda_book_app.Service
             };
 
         }
+
+        
+        public async Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto)
+        {
+            User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == dto.UserId);
+
+            user.Password = dto.NewPassword;
+
+            _context.Users.Update(user);
+
+            return new ChangePasswordResponseDto
+            {
+                StatusText = "PasswordChanged"
+            };
+        }
+
     }
 }
 

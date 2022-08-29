@@ -1,4 +1,6 @@
-﻿namespace Wemuda_book_app.Shared
+﻿using Wemuda_book_app.Model;
+
+namespace Wemuda_book_app.Shared
 {
     public class BookDto
     {
@@ -103,4 +105,17 @@
     {
         public string StatusText { get; set; }
     }
+
+    
+    public class BookAddToUserRequestDto
+    {
+        public int bookId { get; set; }
+        public int userId { get; set; }
+    }
+
+    public class BookAddToUserResponseDto
+    {
+        public string StatusText { get; set; }
+    }
+
 }

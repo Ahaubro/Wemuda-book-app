@@ -15,5 +15,7 @@ namespace Wemuda_book_app.Model
 
         public DateTime ReleaseDate { get; set; }
 
+        public int MinutesRead { get; set; }
+
     }
 }
