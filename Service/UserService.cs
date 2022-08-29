@@ -120,7 +120,6 @@ namespace Wemuda_book_app.Service
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Username = dto.Username,
-                Email = dto.Email,
                 Password = dto.Password
             });
 
