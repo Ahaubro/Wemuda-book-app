@@ -15,9 +15,9 @@ namespace Wemuda_book_app.Service
         Task<BookDeleteResponseDto> Delete(int id);
         Task<BookGetResponseDto> GetById(int id);
         Task<BookGetAllResponseDto> GetAll();
+        
 
-        Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
-
+        //Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
     }
 
     public class BookService : IBookService
@@ -136,6 +136,7 @@ namespace Wemuda_book_app.Service
             };
         }
         
+        /*
         public async Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto)
         {
             
@@ -144,6 +145,9 @@ namespace Wemuda_book_app.Service
                 StatusText = "Nothing Happens Yet" //"BookAddedToUser"
             };
         }
+        */
+
+        
 
     }
 }

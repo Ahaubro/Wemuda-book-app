@@ -29,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
 //HUSK - Inject vores service klasse !!
 builder.Services.AddTransient<IBookService, BookService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IStatusUpdateService, StatusUpdateService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
