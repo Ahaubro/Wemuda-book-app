@@ -36,7 +36,7 @@ namespace Wemuda_book_app.Controllers
         [Authorize]
         [Produces("application/json")]
         [HttpGet]
-        public async Task<AuthGetAllResponseDto> GetAll()
+        public async Task<GetAllUsersResponseDto> GetAll()
         {
             return await _userService.GetAll();
         }
@@ -45,7 +45,7 @@ namespace Wemuda_book_app.Controllers
         // GET USER BY ID
         [Produces("application/json")]
         [HttpGet("{id:int}")]
-        public async Task<AuthGetByIdResponseDto> GetById(int id)
+        public async Task<GetUserByIdResponseDto> GetById(int id)
         {
             Console.WriteLine(id);
             return await _userService.GetById(id);
@@ -55,7 +55,7 @@ namespace Wemuda_book_app.Controllers
         // CREATE USER
         [Produces("application/json")]
         [HttpPost]
-        public async Task<AuthCreateResponseDto> Create([FromBody] AuthCreateRequestDto dto)
+        public async Task<CreateUserResponseDto> Create([FromBody] CreateUserRequestDto dto)
         {
             return await _userService.Create(dto);
         }
@@ -64,7 +64,7 @@ namespace Wemuda_book_app.Controllers
         //DELETE USER
         [Produces("application/json")]
         [HttpDelete("{id:int}")]
-        public async Task<AuthDeleteResponseDto> Delete(int id)
+        public async Task<DeleteUserResponseDto> Delete(int id)
         {
             return await _userService.Delete(id);
         }

@@ -12,8 +12,8 @@ namespace Wemuda_book_app.Model
         [JsonIgnore]
         public string Password { get; set; }
         public string Email { get; set; }
-        //public int MinutesRead { get; set; }
-        //public int BooksRead { get; set; }
+        public int MinutesRead { get; set; }
+        public int BooksRead { get; set; }
 
     }
 }

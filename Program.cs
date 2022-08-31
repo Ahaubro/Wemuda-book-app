@@ -30,6 +30,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
 builder.Services.AddTransient<IBookService, BookService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IStatusUpdateService, StatusUpdateService>();
+builder.Services.AddTransient<IBookStatusService, BookStatusService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

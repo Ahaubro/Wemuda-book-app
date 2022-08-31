@@ -9,5 +9,6 @@ namespace Wemuda_book_app.Data
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<StatusUpdate> StatusUpdates { get; set;}
+        public DbSet<BookStatus> BookStatuses { get; set; }
     }
 }
