@@ -47,6 +47,7 @@ namespace Wemuda_book_app.Controllers
         [HttpGet("{id:int}")]
         public async Task<AuthGetByIdResponseDto> GetById(int id)
         {
+            Console.WriteLine(id);
             return await _userService.GetById(id);
         }
 

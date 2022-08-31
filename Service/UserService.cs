@@ -40,11 +40,13 @@ namespace Wemuda_book_app.Service
         public async Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model)
         {
 
+            Console.WriteLine(model.Username, model.Password);
+
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Username.Equals(model.Username) && u.Password.Equals(model.Password));
 
 
             // return null if user not found
-            if (user == null) return new AuthenticateResponseDto { };
+            if (user == null) return new AuthenticateResponseDto {  };
 
             // authentication successful so generate jwt token
             var token = generateJwtToken(user);
@@ -84,9 +86,10 @@ namespace Wemuda_book_app.Service
         {
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
 
+            if (user == null) return new AuthGetByIdResponseDto { StatusText = "UserNotFound" };
 
             return new AuthGetByIdResponseDto
-            { 
+            {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.Username,
