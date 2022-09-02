@@ -15,10 +15,10 @@ namespace Wemuda_book_app.Service
     public interface IUserService
     {
         Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model);
-        Task<AuthGetAllResponseDto> GetAll();
-        Task<AuthGetByIdResponseDto> GetById(int id);
-        Task<AuthCreateResponseDto> Create(AuthCreateRequestDto dto);
-        Task<AuthDeleteResponseDto> Delete(int id);
+        Task<GetAllUsersResponseDto> GetAll();
+        Task<GetUserByIdResponseDto> GetById(int id);
+        Task<CreateUserResponseDto> Create(CreateUserRequestDto dto);
+        Task<DeleteUserResponseDto> Delete(int id);
         Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto);
     }
     public class UserService : IUserService
@@ -64,11 +64,11 @@ namespace Wemuda_book_app.Service
 
 
         // GET ALL
-        public async Task<AuthGetAllResponseDto> GetAll()
+        public async Task<GetAllUsersResponseDto> GetAll()
         {
             var allUsers = _context.Users.ToList();
 
-            return new AuthGetAllResponseDto
+            return new GetAllUsersResponseDto
             {
                 Users = allUsers.Select(b => new AuthDTO
                 {
@@ -82,13 +82,13 @@ namespace Wemuda_book_app.Service
 
 
         // GET BY ID
-        public async Task<AuthGetByIdResponseDto> GetById(int id)
+        public async Task<GetUserByIdResponseDto> GetById(int id)
         {
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
 
-            if (user == null) return new AuthGetByIdResponseDto { StatusText = "UserNotFound" };
+            if (user == null) return new GetUserByIdResponseDto { StatusText = "UserNotFound" };
 
-            return new AuthGetByIdResponseDto
+            return new GetUserByIdResponseDto
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -116,7 +116,7 @@ namespace Wemuda_book_app.Service
 
 
         // CREATE
-        public async Task<AuthCreateResponseDto> Create(AuthCreateRequestDto dto)
+        public async Task<CreateUserResponseDto> Create(CreateUserRequestDto dto)
         {
             var entity = _context.Users.Add(new User
             {
@@ -129,7 +129,7 @@ namespace Wemuda_book_app.Service
 
             await _context.SaveChangesAsync();
 
-            return new AuthCreateResponseDto
+            return new CreateUserResponseDto
             {
                 StatusText = "UserCreated",
                 FirstName = entity.Entity.FirstName,
@@ -140,7 +140,7 @@ namespace Wemuda_book_app.Service
 
 
         // DELETE
-        public async Task<AuthDeleteResponseDto> Delete(int id)
+        public async Task<DeleteUserResponseDto> Delete(int id)
         {
 
             var user = await _context.Users.FirstOrDefaultAsync(d => d.Id == id);
@@ -152,7 +152,7 @@ namespace Wemuda_book_app.Service
 
             await _context.SaveChangesAsync();
 
-            return new AuthDeleteResponseDto
+            return new DeleteUserResponseDto
             {
                 StatusText = "UserDeleted"
             };

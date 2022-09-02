@@ -43,7 +43,7 @@ namespace Wemuda_book_app.Shared
     }
 
     // CREATE REQUEST
-    public class AuthCreateRequestDto
+    public class CreateUserRequestDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -54,7 +54,7 @@ namespace Wemuda_book_app.Shared
     }
 
     // CREATE RESPONSE
-    public class AuthCreateResponseDto
+    public class CreateUserResponseDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -62,28 +62,14 @@ namespace Wemuda_book_app.Shared
         public string StatusText { get; set; }
     }
 
-    // GET ALL REQUEST
-    public class AuthGetAllRequestDto
-    {
-
-
-    }
-
     // GETALLRESPONSE
-    public class AuthGetAllResponseDto
+    public class GetAllUsersResponseDto
     {
         public IEnumerable<AuthDTO> Users { get; set; }
     }
 
-
-    //GET BY ID REQUEST
-    public class AuthGetByIdRequestDto
-    {
-
-    }
-
     // GET BY ID RESPONSE
-    public class AuthGetByIdResponseDto
+    public class GetUserByIdResponseDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -91,14 +77,8 @@ namespace Wemuda_book_app.Shared
         public string StatusText { get; set; }
     }
 
-    // DELETE REQUEST
-    public class AuthDeleteRequestDto
-    {
-
-    }
-
     // DELETE RESPONSE
-    public class AuthDeleteResponseDto
+    public class DeleteUserResponseDto
     {
         public string StatusText { get; set; }
     }
