@@ -6,6 +6,7 @@ namespace Wemuda_book_app.Shared
     {
         public int Id { get; set; }
 
+        public string? BookStatus { get; set; }
         public string BookId { get; set; }
         public int UserId { get; set; }
         public string Title { get; set; }
@@ -23,6 +24,8 @@ namespace Wemuda_book_app.Shared
         public string BookId { get; set; }
 
         public int UserId { get; set; }
+
+        public string? BookStatus { get; set; }
 
         public string Title { get; set; }
 

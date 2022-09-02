@@ -45,6 +45,7 @@ namespace Wemuda_book_app.Service
                 Thumbnail = dto.Thumbnail,
                 AverageRating = dto.AverageRating,
                 RatingCount = dto.RatingCount,
+                BookStatus = dto.BookStatus
 
                 //Genre = dto.Genre,
                 //ReleaseDate = dto.ReleaseDate
@@ -142,7 +143,8 @@ namespace Wemuda_book_app.Service
                     Description = b.Description,
                     Thumbnail = b.Thumbnail,
                     AverageRating = b.AverageRating,
-                    RatingCount = b.RatingCount
+                    RatingCount = b.RatingCount,
+                    BookStatus = b.BookStatus,
                     //Genre = b.Genre,
                     //ReleaseDate = b.ReleaseDate
                 })
@@ -179,14 +181,13 @@ namespace Wemuda_book_app.Service
                     Description = b.Description,
                     Thumbnail = b.Thumbnail,
                     AverageRating = b.AverageRating,
-                    RatingCount = b.RatingCount
+                    RatingCount = b.RatingCount,
+                    BookStatus = b.BookStatus
                     //Genre = b.Genre,
                     //ReleaseDate = b.ReleaseDate
                 })
             };
         }
-
-
 
     }
 }
