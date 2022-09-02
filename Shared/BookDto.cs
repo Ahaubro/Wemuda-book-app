@@ -6,25 +6,36 @@ namespace Wemuda_book_app.Shared
     {
         public int Id { get; set; }
 
+        public string BookId { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; }
-
-        public string Author { get; set; }
-
-        public string? Genre { get; set; }
-
-        public DateTime ReleaseDate { get; set; }
+        public string? Description { get; set; }
+        //public List<string> Authors { get; set; }
+        public string Thumbnail { get; set; }
+        public int? AverageRating { get; set; }
+        public int? RatingCount { get; set; }
     }
 
     // CREATE REQUEST
     public class BookCreateRequestDto
     {
+      
+        public string BookId { get; set; }
+
+        public int UserId { get; set; }
+
         public string Title { get; set; }
 
-        public string Author { get; set; }
+        public string Description { get; set; }
 
-        public string? Genre { get; set; }
+        //public List<string> Authors { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public string Thumbnail { get; set; }
+
+        public int AverageRating { get; set; }
+
+        public int RatingCount { get; set; }
+
     }
 
     // CREATE RESPONSE
@@ -34,9 +45,7 @@ namespace Wemuda_book_app.Shared
 
         public string Author { get; set; }
 
-        public string? Genre { get; set; }
-
-        public DateTime ReleaseDate { get; set; }
+        //public string? Genre { get; set; }
 
         public string StatusText { get; set; }
     }
@@ -109,13 +118,26 @@ namespace Wemuda_book_app.Shared
     
     public class BookAddToUserRequestDto
     {
-        public int bookId { get; set; }
-        public int userId { get; set; }
+        public int BookId { get; set; }
+        public int UserId { get; set; }
     }
 
     public class BookAddToUserResponseDto
     {
         public string StatusText { get; set; }
+    }
+
+    // GET BOOKS BY USERID REQUEST
+    public class BookGetByUseridRequestDto
+    {
+
+    }
+
+    // GET BOOKS BY USERID RESPONSE
+    public class BookGetByUseridResponseDto
+    {
+        public IEnumerable<BookDto> Books { get; set; }
+
     }
 
 }

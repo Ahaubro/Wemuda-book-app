@@ -15,7 +15,8 @@ namespace Wemuda_book_app.Service
         Task<BookDeleteResponseDto> Delete(int id);
         Task<BookGetResponseDto> GetById(int id);
         Task<BookGetAllResponseDto> GetAll();
-        
+        Task<BookGetByUseridResponseDto> GetByUserid(int userId);
+
 
         //Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
     }
@@ -35,11 +36,18 @@ namespace Wemuda_book_app.Service
         public async Task<BookCreateResponseDto> Create(BookCreateRequestDto dto)
         {
             var entity = _context.Books.Add(new Book
-            {
+            {   
+                UserId = dto.UserId,
+                BookId = dto.BookId,
                 Title = dto.Title,
-                Author = dto.Author,
-                Genre = dto.Genre,
-                ReleaseDate = dto.ReleaseDate
+                //Authors = dto.Authors,
+                Description = dto.Description,
+                Thumbnail = dto.Thumbnail,
+                AverageRating = dto.AverageRating,
+                RatingCount = dto.RatingCount,
+
+                //Genre = dto.Genre,
+                //ReleaseDate = dto.ReleaseDate
             });
 
             await _context.SaveChangesAsync();
@@ -48,9 +56,9 @@ namespace Wemuda_book_app.Service
             {
                 StatusText = "BookCreated",
                 Title = entity.Entity.Title,
-                Author = entity.Entity.Author,
-                Genre = entity.Entity.Genre,
-                ReleaseDate = entity.Entity.ReleaseDate
+                //Author = entity.Entity.Author,
+                //Genre = entity.Entity.Genre,
+                //ReleaseDate = entity.Entity.ReleaseDate
 
             };
         }
@@ -82,9 +90,9 @@ namespace Wemuda_book_app.Service
             //INSERT EXCEPTION
 
             book.Title = dto.Title;
-            book.Author = dto.Author;
-            book.Genre = dto.Genre;
-            book.ReleaseDate = dto.ReleaseDate;
+            //book.Authors = dto.Authors;
+            //book.Genre = dto.Genre;
+            //book.ReleaseDate = dto.ReleaseDate;
 
             var entity = _context.Books.Update(book);
 
@@ -109,9 +117,9 @@ namespace Wemuda_book_app.Service
             {
                 Id = book.Id,
                 Title = book.Title,
-                Author = book.Author,
-                Genre = book.Genre,
-                ReleaseDate = book.ReleaseDate
+                //Authors = book.Authors,
+                //Genre = book.Genre,
+                //ReleaseDate = book.ReleaseDate
 
             };
         }
@@ -128,14 +136,19 @@ namespace Wemuda_book_app.Service
                 Books = allBooks.Select(b => new BookDto
                 {
                     Id = b.Id,
+                    UserId = b.UserId,
+                    BookId = b.BookId,
                     Title = b.Title,
-                    Author = b.Author,
-                    Genre = b.Genre,
-                    ReleaseDate = b.ReleaseDate
+                    Description = b.Description,
+                    Thumbnail = b.Thumbnail,
+                    AverageRating = b.AverageRating,
+                    RatingCount = b.RatingCount
+                    //Genre = b.Genre,
+                    //ReleaseDate = b.ReleaseDate
                 })
             };
         }
-        
+
         /*
         public async Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto)
         {
@@ -147,7 +160,33 @@ namespace Wemuda_book_app.Service
         }
         */
 
-        
+
+        //GET BY USER ID
+        public async Task<BookGetByUseridResponseDto> GetByUserid(int userId)
+        {
+            var books = _context.Books.AsNoTracking().Where(b => b.UserId == userId);
+
+            //INSERT EXCEPTION
+
+            return new BookGetByUseridResponseDto
+            {
+                Books = books.Select(b => new BookDto
+                {
+                    Id = b.Id,
+                    UserId = b.UserId,
+                    BookId = b.BookId,
+                    Title = b.Title,
+                    Description = b.Description,
+                    Thumbnail = b.Thumbnail,
+                    AverageRating = b.AverageRating,
+                    RatingCount = b.RatingCount
+                    //Genre = b.Genre,
+                    //ReleaseDate = b.ReleaseDate
+                })
+            };
+        }
+
+
 
     }
 }

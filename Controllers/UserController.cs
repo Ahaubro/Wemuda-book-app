@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 using Wemuda_book_app.Service;
 using Wemuda_book_app.Shared;
 
@@ -67,6 +68,14 @@ namespace Wemuda_book_app.Controllers
         public async Task<AuthDeleteResponseDto> Delete(int id)
         {
             return await _userService.Delete(id);
+        }
+
+        //Change password
+        [Produces("application/json")]
+        [HttpPost("changePassword")]
+        public async Task<ChangePasswordResponseDto> ChangePassword([FromBody] ChangePasswordRequestDto dto)
+        {
+            return await _userService.ChangePassword(dto);
         }
 
     }

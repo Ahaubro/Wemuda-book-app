@@ -47,13 +47,13 @@ namespace Wemuda_book_app.Controllers
         }
 
 
-        //GET BOOK BY ID
-        [Produces("application/json")]
-        [HttpGet("{id:int}")]
-        public async Task<BookGetResponseDto> GetById(int id)
-        { 
-            return await _bookService.GetById(id);
-        }
+        ////GET BOOK BY ID
+        //[Produces("application/json")]
+        //[HttpGet("{id:int}")]
+        //public async Task<BookGetResponseDto> GetById(int id)
+        //{ 
+        //    return await _bookService.GetById(id);
+        //}
 
 
         // GET ALL BOOKS
@@ -63,6 +63,25 @@ namespace Wemuda_book_app.Controllers
         {
             return await _bookService.GetAll();
         }
+
+        // BOOK QUERY FOR SAFETY
+
+        //[Produces("application/json")]
+        //[HttpGet("search/{query:string}")]
+        //public async Task<BookGetAllResponseDto> BookSearch()
+        //{
+        //    return await ;
+        //}
+
+
+        //GET BOOK BY USERID
+        [Produces("application/json")]
+        [HttpGet("{userId:int}")]
+        public async Task<BookGetByUseridResponseDto> GetByUserId(int userId)
+        {
+            return await _bookService.GetByUserid(userId);
+        }
+
 
     }
 }
