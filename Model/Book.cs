@@ -22,7 +22,5 @@ namespace Wemuda_book_app.Model
         public string Thumbnail { get; set; }
         public int? AverageRating { get; set; }
         public int? RatingCount { get; set; }
-
-
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Diagnostics.Metrics;
+using System.Net;
 using Wemuda_book_app.Data;
+using Wemuda_book_app.Migrations;
 using Wemuda_book_app.Model;
 using Wemuda_book_app.Shared;
 
@@ -18,8 +20,8 @@ namespace Wemuda_book_app.Service
         Task<BookGetByUseridResponseDto> GetByUserid(int userId);
 
         Task<BookGetByBookidResponseDto> GetByBookId(string bookId);
-
-
+        
+        Task<BookEditStatusResponseDto> EditStatus(BookEditStatusRequestDto dto);
         //Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
     }
 
@@ -221,6 +223,34 @@ namespace Wemuda_book_app.Service
                 BookStatus = book.BookStatus,
 
             };
+        }
+
+        //EDIT BOOK STATUS
+        public async Task<BookEditStatusResponseDto> EditStatus(BookEditStatusRequestDto dto)
+        {
+            var book = await _context.Books.FirstOrDefaultAsync(b => b.BookId == dto.BookId && b.UserId == dto.UserId);
+
+            if (book != null)
+            {
+                book.BookStatus = dto.BookStatus;
+
+                var entity = _context.Books.Update(book);
+
+                await _context.SaveChangesAsync();
+
+                return new BookEditStatusResponseDto
+                {
+                    StatusText = "BookStatusUpdated"
+                };
+            }
+            else
+            {
+                return new BookEditStatusResponseDto
+                {
+                    StatusText = "BookNotFound"
+                };
+
+            }
         }
 
     }

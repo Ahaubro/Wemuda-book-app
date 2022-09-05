@@ -157,7 +157,16 @@ namespace Wemuda_book_app.Shared
         public string? BookStatus { get; set; }
     }
 
+    public class BookEditStatusRequestDto
+    {
+        public int UserId { get; set; }
+        public string BookId { get; set; }
+        public string BookStatus { get; set; }
+    }
 
-
+    public class BookEditStatusResponseDto
+    {
+        public string StatusText { get; set; }
+    }
 
 }

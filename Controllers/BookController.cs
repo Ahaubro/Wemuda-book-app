@@ -91,6 +91,12 @@ namespace Wemuda_book_app.Controllers
             return await _bookService.GetByBookId(bookId);
         }
 
-
+        //EDIT BOOK STATUS
+        [Produces("application/json")]
+        [HttpPatch]
+        public async Task<BookEditStatusResponseDto> EditStatus([FromBody]BookEditStatusRequestDto dto)
+        {
+            return await _bookService.EditStatus(dto);
+        }
     }
 }
