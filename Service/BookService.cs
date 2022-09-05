@@ -11,11 +11,13 @@ namespace Wemuda_book_app.Service
     public interface IBookService
     {
         Task<BookCreateResponseDto> Create(BookCreateRequestDto dto);
-        Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int id);
+        Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int id, string bookId);
         Task<BookDeleteResponseDto> Delete(int id);
         Task<BookGetResponseDto> GetById(int id);
         Task<BookGetAllResponseDto> GetAll();
         Task<BookGetByUseridResponseDto> GetByUserid(int userId);
+
+        Task<BookGetByBookidResponseDto> GetByBookId(string bookId);
 
 
         //Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
@@ -84,26 +86,43 @@ namespace Wemuda_book_app.Service
         }
 
         // UPDATE
-        public async Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int id)
+        public async Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int userId, string bookId)
         {
-            var book = await _context.Books.FirstOrDefaultAsync(d => d.Id == id);
+            var book = await _context.Books.FirstOrDefaultAsync(d => d.BookId == bookId && d.UserId == userId);
 
-            //INSERT EXCEPTION
-
-            book.Title = dto.Title;
-            //book.Authors = dto.Authors;
-            //book.Genre = dto.Genre;
-            //book.ReleaseDate = dto.ReleaseDate;
-
-            var entity = _context.Books.Update(book);
-
-            await _context.SaveChangesAsync();
-
-            return new BookUpdateResponseDto
+            if (book != null)
             {
-                StatusText = "BookUpdated",
-                Title = entity.Entity.Title
-            };
+                book.BookStatus = dto.BookStatus;
+
+                var entity = _context.Books.Update(book);
+
+                await _context.SaveChangesAsync();
+
+                return new BookUpdateResponseDto
+                {
+                    StatusText = "BookUpdated",
+                    Title = entity.Entity.Title
+                };
+            }
+            else 
+            {
+                var entity = _context.Books.Add(new Book
+                {
+                    UserId = dto.UserId,
+                    BookId = dto.BookId,
+                    Title = dto.Title,
+                    Thumbnail = dto.Thumbnail,
+                    BookStatus = dto.BookStatus
+
+                    //Genre = dto.Genre,
+                    //ReleaseDate = dto.ReleaseDate
+                });
+
+                await _context.SaveChangesAsync();
+
+            }
+
+            return null;
 
         }
 
@@ -186,6 +205,21 @@ namespace Wemuda_book_app.Service
                     //Genre = b.Genre,
                     //ReleaseDate = b.ReleaseDate
                 })
+            };
+        }
+
+
+        //GET ONE BY BOOKID
+        public async Task<BookGetByBookidResponseDto> GetByBookId(string bookId)
+        {
+            var book = await _context.Books.AsNoTracking().FirstOrDefaultAsync(b => b.BookId.Equals(bookId));
+
+            return new BookGetByBookidResponseDto
+            {
+                Id = book.Id,
+                Title = book.Title,
+                BookStatus = book.BookStatus,
+
             };
         }
 

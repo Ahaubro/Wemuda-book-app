@@ -31,10 +31,10 @@ namespace Wemuda_book_app.Controllers
 
         //UPDATE BOOK
         [Produces("application/json")]
-        [HttpPatch("{id:int}")]
-        public async Task<BookUpdateResponseDto> Update([FromBody] BookUpdateRequestDto dto, int id)
+        [HttpPatch("{userId:int}/{bookId}")]
+        public async Task<BookUpdateResponseDto> Update([FromBody] BookUpdateRequestDto dto, int userId, string bookId)
         {
-            return await _bookService.Update(dto, id);
+            return await _bookService.Update(dto, userId, bookId);
         }
 
 
@@ -74,12 +74,21 @@ namespace Wemuda_book_app.Controllers
         //}
 
 
-        //GET BOOK BY USERID
+        //GET BOOKs BY USERID
         [Produces("application/json")]
         [HttpGet("{userId:int}")]
         public async Task<BookGetByUseridResponseDto> GetByUserId(int userId)
         {
             return await _bookService.GetByUserid(userId);
+        }
+
+
+        //GET BOOK BY BOOKID
+        [Produces("application/json")]
+        [HttpGet("getByBookId/{bookId}")]
+        public async Task<BookGetByBookidResponseDto> GetByBookId(string bookId)
+        {
+            return await _bookService.GetByBookId(bookId);
         }
 
 
