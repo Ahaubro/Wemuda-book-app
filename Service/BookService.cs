@@ -37,33 +37,38 @@ namespace Wemuda_book_app.Service
         // CREATE
         public async Task<BookCreateResponseDto> Create(BookCreateRequestDto dto)
         {
-            var entity = _context.Books.Add(new Book
-            {   
-                UserId = dto.UserId,
-                BookId = dto.BookId,
-                Title = dto.Title,
-                //Authors = dto.Authors,
-                Description = dto.Description,
-                Thumbnail = dto.Thumbnail,
-                AverageRating = dto.AverageRating,
-                RatingCount = dto.RatingCount,
-                BookStatus = dto.BookStatus
+            var check = _context.Books.FirstOrDefault(d => d.BookId == dto.BookId && d.UserId == dto.UserId);
 
-                //Genre = dto.Genre,
-                //ReleaseDate = dto.ReleaseDate
-            });
-
-            await _context.SaveChangesAsync();
-
-            return new BookCreateResponseDto
+            if (check == null) 
             {
-                StatusText = "BookCreated",
-                Title = entity.Entity.Title,
-                //Author = entity.Entity.Author,
-                //Genre = entity.Entity.Genre,
-                //ReleaseDate = entity.Entity.ReleaseDate
+                var entity = _context.Books.Add(new Book
+                {
+                    UserId = dto.UserId,
+                    BookId = dto.BookId,
+                    Title = dto.Title,
+                    //Authors = dto.Authors,
+                    Description = dto.Description,
+                    Thumbnail = dto.Thumbnail,
+                    AverageRating = dto.AverageRating,
+                    RatingCount = dto.RatingCount,
+                    BookStatus = dto.BookStatus
 
-            };
+                    //Genre = dto.Genre,
+                    //ReleaseDate = dto.ReleaseDate
+                });
+
+                await _context.SaveChangesAsync();
+
+                return new BookCreateResponseDto
+                {
+                    StatusText = "BookCreated",
+                    Title = entity.Entity.Title,
+                };
+            }
+
+            return null;
+            
+            
         }
 
         // DELETE
@@ -113,9 +118,6 @@ namespace Wemuda_book_app.Service
                     Title = dto.Title,
                     Thumbnail = dto.Thumbnail,
                     BookStatus = dto.BookStatus
-
-                    //Genre = dto.Genre,
-                    //ReleaseDate = dto.ReleaseDate
                 });
 
                 await _context.SaveChangesAsync();

@@ -28,7 +28,7 @@ namespace Wemuda_book_app.Shared
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         //public List<string> Authors { get; set; }
 
