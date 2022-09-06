@@ -12,7 +12,7 @@ namespace Wemuda_book_app.Shared
         public string? Description { get; set; }
         //public List<string> Authors { get; set; }
         public string? Thumbnail { get; set; }
-        public int? AverageRating { get; set; }
+        public double? AverageRating { get; set; }
         public int? RatingCount { get; set; }
     }
 
@@ -34,9 +34,9 @@ namespace Wemuda_book_app.Shared
 
         public string? Thumbnail { get; set; }
 
-        public int? AverageRating { get; set; }
+        public double? AverageRating { get; set; }
 
-        public int RatingCount { get; set; }
+        public int? RatingCount { get; set; }
 
     }
 
