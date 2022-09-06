@@ -6,8 +6,8 @@ namespace Wemuda_book_app.Service
 {
     public interface IStatusUpdateService
     {
-        Task<CreateStatusUpdateResponseDto> Create(CreateStatusUpdateRequestDto dto, int userId, int bookId);
-        Task<GetBookStatusUpdatesResponseDto> GetByUserAndBook(int userId, int bookId);
+        Task<CreateStatusUpdateResponseDto> Create(CreateStatusUpdateRequestDto dto, int userId);
+        Task<GetBookStatusUpdatesResponseDto> GetByUserAndBook(int userId, string bookId);
         Task<GetUserStatusUpdatesResponseDto> GetByUser(int userId);
     }
     public class StatusUpdateService : IStatusUpdateService
@@ -19,14 +19,11 @@ namespace Wemuda_book_app.Service
             _context = context;
         }
 
-        public async Task<CreateStatusUpdateResponseDto> Create(CreateStatusUpdateRequestDto dto, int userId, int bookId)
+        public async Task<CreateStatusUpdateResponseDto> Create(CreateStatusUpdateRequestDto dto, int userId)
         {
             var entity = _context.StatusUpdates.Add(new StatusUpdate
             {
                 UserId = userId,
-                BookId = bookId,
-                CurrentPage = dto.CurrentPage,
-                FinishedBook = dto.FinishedBook,
                 MinutesRead = dto.MinutesAdded,
                 TimeOfUpdate = DateTime.Now
             });
@@ -39,17 +36,15 @@ namespace Wemuda_book_app.Service
             };
         }
 
-        public async Task<GetBookStatusUpdatesResponseDto> GetByUserAndBook(int userId, int bookId)
+        public async Task<GetBookStatusUpdatesResponseDto> GetByUserAndBook(int userId, string bookId)
         {
-            var bookStatusUpdates = _context.StatusUpdates.Where(s => s.BookId == bookId && s.UserId == userId).ToList();
+            var bookStatusUpdates = _context.StatusUpdates.Where(s => s.UserId == userId).ToList();
 
             return new GetBookStatusUpdatesResponseDto
             {
                 StatusUpdates = bookStatusUpdates.Select(statusUpdate => new BookStatusUpdateDto
                 {
-                    Id = statusUpdate.Id,
-                    CurrentPage = statusUpdate.CurrentPage,
-                    FinishedBook = statusUpdate.FinishedBook,
+                    UserId = userId,
                     MinutesRead = statusUpdate.MinutesRead,
                     TimeOfUpdate = statusUpdate.TimeOfUpdate
                 })
@@ -64,10 +59,6 @@ namespace Wemuda_book_app.Service
             {
                 StatusUpdates = userStatusUpdates.Select(statusUpdate => new UserStatusUpdateDto
                 {
-                    Id = statusUpdate.Id,
-                    BookId = statusUpdate.BookId,
-                    CurrentPage = statusUpdate.CurrentPage,
-                    FinishedBook = statusUpdate.FinishedBook,
                     MinutesRead = statusUpdate.MinutesRead,
                     TimeOfUpdate = statusUpdate.TimeOfUpdate
                 })
