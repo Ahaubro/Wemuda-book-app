@@ -10,4 +10,5 @@ namespace Wemuda_book_app.Model
         public int MinutesRead { get; set; }
         public int UserId { get; set; }
     }
+
 }
