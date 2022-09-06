@@ -8,9 +8,7 @@ namespace Wemuda_book_app.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "BooksRead",
-                table: "Users");
+           
 
             migrationBuilder.AlterColumn<string>(
                 name: "Thumbnail",
@@ -20,15 +18,9 @@ namespace Wemuda_book_app.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
         }
-
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "BooksRead",
-                table: "Users",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+            
 
             migrationBuilder.AlterColumn<string>(
                 name: "Thumbnail",
