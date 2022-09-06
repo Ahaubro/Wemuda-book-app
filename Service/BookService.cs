@@ -41,7 +41,7 @@ namespace Wemuda_book_app.Service
         {
             var check = _context.Books.FirstOrDefault(d => d.BookId == dto.BookId && d.UserId == dto.UserId);
 
-            if (check == null) 
+            if (check == null)
             {
                 var entity = _context.Books.Add(new Book
                 {
@@ -66,10 +66,16 @@ namespace Wemuda_book_app.Service
                     StatusText = "BookCreated",
                     Title = entity.Entity.Title,
                 };
+            } 
+            else if (check.BookStatus.Equals("WantToRead")) 
+            {
+                _context.Books.Remove(check);
+                await _context.SaveChangesAsync();
             }
+                
+            
 
             return null;
-            
             
         }
 
