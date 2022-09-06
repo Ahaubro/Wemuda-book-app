@@ -16,15 +16,15 @@ namespace Wemuda_book_app.Controllers
         }
 
         [Produces("application/json")]
-        [HttpPost("{userId:int}/{bookId:int}")]
-        public async Task<CreateStatusUpdateResponseDto> Create([FromBody] CreateStatusUpdateRequestDto dto, int userId, int bookId)
+        [HttpPost("{userId:int}")]
+        public async Task<CreateStatusUpdateResponseDto> Create([FromBody] CreateStatusUpdateRequestDto dto, int userId)
         {
-            return await _statusUpdateService.Create(dto, userId, bookId);
+            return await _statusUpdateService.Create(dto, userId);
         }
 
         [Produces("application/json")]
-        [HttpGet("{userId:int}/{bookId:int}")]
-        public async Task<GetBookStatusUpdatesResponseDto> GetByUserAndBook(int userId, int bookId)
+        [HttpGet("{userId:int}/{bookId}")]
+        public async Task<GetBookStatusUpdatesResponseDto> GetByUserAndBook(int userId, string bookId)
         {
             return await _statusUpdateService.GetByUserAndBook(userId, bookId);
         }
