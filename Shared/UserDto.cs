@@ -19,6 +19,7 @@ namespace Wemuda_book_app.Shared
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
+        public int BooksGoal { get; set;}
     }
 
 
@@ -74,6 +75,8 @@ namespace Wemuda_book_app.Shared
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
+        public int BooksRead { get; set; }
+        public int BooksGoal { get; set; }
         public string StatusText { get; set; }
     }
 
@@ -91,6 +94,21 @@ namespace Wemuda_book_app.Shared
     }
 
     public class ChangePasswordResponseDto
+    {
+        public string StatusText { get; set; }
+    }
+
+    public class SetBookGoalRequestDto
+    {
+        public int BooksGoal { get; set; }
+    }
+
+    public class SetBookGoalResponseDto
+    {
+        public string StatusText { get; set; }
+    }
+
+    public class ResetBooksReadResponeDto
     {
         public string StatusText { get; set; }
     }

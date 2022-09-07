@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wemuda_book_app.Data;
 
@@ -11,9 +12,10 @@ using Wemuda_book_app.Data;
 namespace Wemuda_book_app.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220906134518_RemovedBooksReadAddedBooksGoal")]
+    partial class RemovedBooksReadAddedBooksGoal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,13 +115,7 @@ namespace Wemuda_book_app.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-<<<<<<< HEAD
-=======
                     b.Property<int>("BooksGoal")
-                        .HasColumnType("int");
-
->>>>>>> bbcb722933c28eddd16c898466f5555456af370d
-                    b.Property<int>("BooksRead")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")

@@ -14,6 +14,7 @@ namespace Wemuda_book_app.Model
         public string Email { get; set; }
         public int MinutesRead { get; set; }
         public int BooksRead { get; set; }
+        public int BooksGoal { get; set; }
 
     }
 }

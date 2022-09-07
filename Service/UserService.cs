@@ -20,6 +20,8 @@ namespace Wemuda_book_app.Service
         Task<CreateUserResponseDto> Create(CreateUserRequestDto dto);
         Task<DeleteUserResponseDto> Delete(int id);
         Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto);
+        Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId);
+        Task<ResetBooksReadResponeDto> ResetBooksRead(int userId);
     }
     public class UserService : IUserService
     {
@@ -88,11 +90,15 @@ namespace Wemuda_book_app.Service
 
             if (user == null) return new GetUserByIdResponseDto { StatusText = "UserNotFound" };
 
+            Console.WriteLine("UserService GetById: " + user.Username + ", " + user.BooksGoal);
+
             return new GetUserByIdResponseDto
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.Username,
+                BooksRead = user.BooksRead,
+                BooksGoal = user.BooksGoal,
                 StatusText = "UserFound"
             };
         }
@@ -171,6 +177,40 @@ namespace Wemuda_book_app.Service
             return new ChangePasswordResponseDto
             {
                 StatusText = "PasswordChanged"
+            };
+        }
+
+        public async Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId)
+        {
+            User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == userId);
+
+            user.BooksGoal = dto.BooksGoal;
+
+            Console.WriteLine("UserService SetBooksGoal: " + user.BooksGoal);
+
+            _context.Users.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            return new SetBookGoalResponseDto
+            {
+                StatusText = "BookGoalSet"
+            };
+        }
+
+        public async Task<ResetBooksReadResponeDto> ResetBooksRead(int userId)
+        {
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            user.BooksRead = 0;
+
+            _context.Users.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            return new ResetBooksReadResponeDto
+            {
+                StatusText = "ResetBooksRead"
             };
         }
 
