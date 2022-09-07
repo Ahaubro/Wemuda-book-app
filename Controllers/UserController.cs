@@ -86,5 +86,12 @@ namespace Wemuda_book_app.Controllers
             return await _userService.SetBooksGoal(dto, userId);
         }
 
+        [Produces("application/json")]
+        [HttpPatch("resetBooksRead/{userId:int}")]
+        public async Task<ResetBooksReadResponeDto> ResetBooksRead(int userId)
+        {
+            return await _userService.ResetBooksRead(userId);
+        }
+
     }
 }

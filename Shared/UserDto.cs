@@ -108,4 +108,9 @@ namespace Wemuda_book_app.Shared
         public string StatusText { get; set; }
     }
 
+    public class ResetBooksReadResponeDto
+    {
+        public string StatusText { get; set; }
+    }
+
 }

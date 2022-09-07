@@ -21,6 +21,7 @@ namespace Wemuda_book_app.Service
         Task<DeleteUserResponseDto> Delete(int id);
         Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto);
         Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId);
+        Task<ResetBooksReadResponeDto> ResetBooksRead(int userId);
     }
     public class UserService : IUserService
     {
@@ -196,6 +197,23 @@ namespace Wemuda_book_app.Service
                 StatusText = "BookGoalSet"
             };
         }
+
+        public async Task<ResetBooksReadResponeDto> ResetBooksRead(int userId)
+        {
+            User user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            user.BooksRead = 0;
+
+            _context.Users.Update(user);
+
+            await _context.SaveChangesAsync();
+
+            return new ResetBooksReadResponeDto
+            {
+                StatusText = "ResetBooksRead"
+            };
+        }
+
     }
 }
 
