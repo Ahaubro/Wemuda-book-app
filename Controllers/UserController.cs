@@ -48,7 +48,7 @@ namespace Wemuda_book_app.Controllers
         [HttpGet("{id:int}")]
         public async Task<GetUserByIdResponseDto> GetById(int id)
         {
-            Console.WriteLine(id);
+            Console.WriteLine("UserController GetById: " + id);
             return await _userService.GetById(id);
         }
 
@@ -76,6 +76,14 @@ namespace Wemuda_book_app.Controllers
         public async Task<ChangePasswordResponseDto> ChangePassword([FromBody] ChangePasswordRequestDto dto)
         {
             return await _userService.ChangePassword(dto);
+        }
+
+        [Produces("application/json")]
+        [HttpPatch("setBooksGoal/{userId:int}")]
+        public async Task<SetBookGoalResponseDto> SetBooksGoal([FromBody] SetBookGoalRequestDto dto, int userId)
+        {
+            Console.WriteLine("UserController SetBookGoal: " + dto.BooksGoal + " " + userId);
+            return await _userService.SetBooksGoal(dto, userId);
         }
 
     }
