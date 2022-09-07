@@ -242,6 +242,15 @@ namespace Wemuda_book_app.Service
             {
                 book.BookStatus = dto.BookStatus;
 
+                if(dto.BookStatus == "History")
+                {
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == dto.UserId);
+
+                    user.BooksRead++;
+
+                    _context.Users.Update(user);
+                }
+
                 var entity = _context.Books.Update(book);
 
                 await _context.SaveChangesAsync();

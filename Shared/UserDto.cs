@@ -75,6 +75,7 @@ namespace Wemuda_book_app.Shared
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
+        public int BooksRead { get; set; }
         public int BooksGoal { get; set; }
         public string StatusText { get; set; }
     }

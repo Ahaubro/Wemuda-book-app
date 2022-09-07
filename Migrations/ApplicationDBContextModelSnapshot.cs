@@ -116,6 +116,9 @@ namespace Wemuda_book_app.Migrations
                     b.Property<int>("BooksGoal")
                         .HasColumnType("int");
 
+                    b.Property<int>("BooksRead")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

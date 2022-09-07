@@ -96,6 +96,7 @@ namespace Wemuda_book_app.Service
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Username = user.Username,
+                BooksRead = user.BooksRead,
                 BooksGoal = user.BooksGoal,
                 StatusText = "UserFound"
             };
