@@ -8,6 +8,7 @@ using Wemuda_book_app.Data;
 using Wemuda_book_app.Helpers;
 using Wemuda_book_app.Service;
 using Newtonsoft.Json.Converters;
+using Wemuda_book_app.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,8 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlSer
 
 
 //HUSK - Inject vores service klasse !!
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof(MailSettings)));
+builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IBookService, BookService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IStatusUpdateService, StatusUpdateService>();
@@ -34,11 +37,10 @@ builder.Services.AddTransient<IBookStatusService, BookStatusService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, 
         options => builder.Configuration.Bind("JwtSettings", options))
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
         options => builder.Configuration.Bind("CookieSettings", options));
-
 
 
 var app = builder.Build();

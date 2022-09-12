@@ -5,6 +5,7 @@ using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Wemuda_book_app.Configuration;
 using Wemuda_book_app.Data;
 using Wemuda_book_app.Helpers;
 using Wemuda_book_app.Model;
@@ -28,13 +29,13 @@ namespace Wemuda_book_app.Service
 
         private readonly AppSettings _appSettings;
         private readonly ApplicationDBContext _context;
-        private List<User> _users;
+        private readonly IMailService _mailService;
 
-        public UserService(IOptions<AppSettings> appSettings, ApplicationDBContext context)
+        public UserService(IOptions<AppSettings> appSettings, ApplicationDBContext context, IOptions<MailSettings> mailSettings)
         {
             _appSettings = appSettings.Value;
             _context = context;
-
+            _mailService = new MailService(mailSettings);
         }
 
 
@@ -124,6 +125,27 @@ namespace Wemuda_book_app.Service
         // CREATE
         public async Task<CreateUserResponseDto> Create(CreateUserRequestDto dto)
         {
+            var emailReciever = dto.Email;
+            Console.WriteLine(emailReciever);
+            var emailRecievers = new List<string> { emailReciever };
+            var emailSubject = "Welcome to Wemuda Books";
+            var emailBody = "Hello " + dto.FirstName + " " + dto.LastName + "\nWelcome to Wemuda Books\nHope you enjoy";
+
+            var email = new Email(emailRecievers, emailSubject, emailBody);
+
+            var emailSent = await _mailService.SendAsync(email, new CancellationToken());
+
+            if (!emailSent)
+            {
+                return new CreateUserResponseDto
+                {
+                    StatusText = "Invalid Email",
+                    FirstName = "",
+                    LastName = "",
+                    Username = ""
+                };
+            }
+
             var entity = _context.Users.Add(new User
             {
                 FirstName = dto.FirstName,
@@ -137,11 +159,12 @@ namespace Wemuda_book_app.Service
 
             return new CreateUserResponseDto
             {
-                StatusText = "UserCreated",
+                StatusText = "User Created",
                 FirstName = entity.Entity.FirstName,
                 LastName = entity.Entity.LastName,
                 Username = entity.Entity.Username,
             };
+        
         }
 
 
