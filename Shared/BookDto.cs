@@ -1,4 +1,5 @@
-﻿using Wemuda_book_app.Model;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Wemuda_book_app.Model;
 
 namespace Wemuda_book_app.Shared
 {
@@ -10,7 +11,7 @@ namespace Wemuda_book_app.Shared
         public int UserId { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
-        //public List<string> Authors { get; set; }
+        public string? Author { get; set; }
         public string? Thumbnail { get; set; }
         public double? AverageRating { get; set; }
         public int? RatingCount { get; set; }
@@ -28,9 +29,9 @@ namespace Wemuda_book_app.Shared
 
         public string Title { get; set; }
 
-        public string? Description { get; set; }
+        public string? Author { get; set; }
 
-        //public List<string> Authors { get; set; }
+        public string? Description { get; set; }
 
         public string? Thumbnail { get; set; }
 
@@ -44,10 +45,6 @@ namespace Wemuda_book_app.Shared
     public class BookCreateResponseDto
     {
         public string Title { get; set; }
-
-        public string Author { get; set; }
-
-        //public string? Genre { get; set; }
 
         public string StatusText { get; set; }
     }

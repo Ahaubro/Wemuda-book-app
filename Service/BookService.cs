@@ -18,9 +18,7 @@ namespace Wemuda_book_app.Service
         Task<BookGetResponseDto> GetById(int id);
         Task<BookGetAllResponseDto> GetAll();
         Task<BookGetByUseridResponseDto> GetByUserid(int userId);
-
         Task<BookGetByBookidResponseDto> GetByBookId(string bookId);
-        
         Task<BookEditStatusResponseDto> EditStatus(BookEditStatusRequestDto dto);
         //Task<BookAddToUserResponseDto> AddToUser(BookAddToUserRequestDto dto);
     }
@@ -48,12 +46,13 @@ namespace Wemuda_book_app.Service
                     UserId = dto.UserId,
                     BookId = dto.BookId,
                     Title = dto.Title,
-                    //Authors = dto.Authors,
+                    Author = dto.Author,
                     Description = dto.Description,
                     Thumbnail = dto.Thumbnail,
                     AverageRating = dto.AverageRating,
                     RatingCount = dto.RatingCount,
-                    BookStatus = dto.BookStatus
+                    BookStatus = dto.BookStatus,
+               
 
                     //Genre = dto.Genre,
                     //ReleaseDate = dto.ReleaseDate
@@ -72,11 +71,8 @@ namespace Wemuda_book_app.Service
                 _context.Books.Remove(check);
                 await _context.SaveChangesAsync();
             }
-                
-            
 
             return null;
-            
         }
 
         // DELETE
@@ -174,8 +170,7 @@ namespace Wemuda_book_app.Service
                     AverageRating = b.AverageRating,
                     RatingCount = b.RatingCount,
                     BookStatus = b.BookStatus,
-                    //Genre = b.Genre,
-                    //ReleaseDate = b.ReleaseDate
+                    Author = b.Author
                 })
             };
         }
@@ -207,6 +202,7 @@ namespace Wemuda_book_app.Service
                     UserId = b.UserId,
                     BookId = b.BookId,
                     Title = b.Title,
+                    Author = b.Author,
                     Description = b.Description,
                     Thumbnail = b.Thumbnail,
                     AverageRating = b.AverageRating,
