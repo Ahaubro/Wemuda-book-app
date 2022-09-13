@@ -5,6 +5,8 @@
         public int Id { get; set; }
         public string Content { get; set; }
         public int Rating { get; set; }
+        public string? BookId { get; set; }
+        public int? UserId { get; set; }
     }
 
 
@@ -17,6 +19,8 @@
         public string Content { get; set; }
 
         public int Rating { get; set; }
+        public string? BookId { get; set; }
+        public int? UserId { get; set; }
 
 
     }
@@ -57,5 +61,21 @@
         public string Content { get; set; }
 
         public int Rating { get; set; }
+        public string? BookId { get; set; }
+        public int? UserId { get; set; }
+    }
+
+
+    // GET REVIEWS BY BOOKID REQUEST
+    public class GetReviewsByBookIdRequestDto
+    {
+
+    }
+
+    // GET REVIEWS BY BOOKID RESPONSE
+    public class GetReviewsByBookIdResponseDto
+    {
+        public IEnumerable<ReviewDto> Reviews { get; set; }
+
     }
 }

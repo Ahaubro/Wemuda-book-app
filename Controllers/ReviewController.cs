@@ -32,5 +32,14 @@ namespace Wemuda_book_app.Controllers
             return await _reviewService.GetAll();
         }
 
+
+        //GET REVIEWS BY BOOKID
+        [Produces("application/json")]
+        [HttpGet("{bookId}")]
+        public async Task<GetReviewsByBookIdResponseDto> GetReviewsByBookId(string bookId)
+        {
+            return await _reviewService.GetReviewsByBookId(bookId);
+        }
+
     }
 }
