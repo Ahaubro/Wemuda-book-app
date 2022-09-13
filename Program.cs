@@ -32,6 +32,7 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection(nameof
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IBookService, BookService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IReviewService, ReviewService>();
 builder.Services.AddTransient<IStatusUpdateService, StatusUpdateService>();
 builder.Services.AddTransient<IBookStatusService, BookStatusService>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
