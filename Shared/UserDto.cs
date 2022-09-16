@@ -7,7 +7,6 @@ namespace Wemuda_book_app.Shared
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
     }
@@ -16,7 +15,6 @@ namespace Wemuda_book_app.Shared
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        public string Username { get; set; }
         public int BooksGoal { get; set;}
     }
 
@@ -24,7 +22,7 @@ namespace Wemuda_book_app.Shared
     public class AuthenticateRequestDto
     {
         [Required]
-        public string Username { get; set; }
+        public string FullName { get; set; }
 
         [Required]
         public string Password { get; set; }
@@ -34,7 +32,6 @@ namespace Wemuda_book_app.Shared
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        public string Username { get; set; }
         //public UserDto User { get; set; }
         public string Token { get; set; }
 
@@ -44,7 +41,6 @@ namespace Wemuda_book_app.Shared
     public class CreateUserRequestDto
     {
         public string FullName { get; set; }
-        public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
 
@@ -54,7 +50,6 @@ namespace Wemuda_book_app.Shared
     public class CreateUserResponseDto
     {
         public string FullName { get; set; }
-        public string Username { get; set; }
         public string StatusText { get; set; }
     }
 
@@ -68,7 +63,6 @@ namespace Wemuda_book_app.Shared
     public class GetUserByIdResponseDto
     {
         public string FullName { get; set; }
-        public string Username { get; set; }
         public int BooksRead { get; set; }
         public int BooksGoal { get; set; }
         public string StatusText { get; set; }

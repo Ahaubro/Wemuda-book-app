@@ -6,7 +6,6 @@ namespace Wemuda_book_app.Model
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-        public string Username { get; set; }
 
         [JsonIgnore]
         public string Password { get; set; }

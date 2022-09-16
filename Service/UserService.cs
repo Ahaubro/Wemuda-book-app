@@ -43,9 +43,7 @@ namespace Wemuda_book_app.Service
         public async Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model)
         {
 
-            Console.WriteLine(model.Username, model.Password);
-
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Username.Equals(model.Username) && u.Password.Equals(model.Password));
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.FullName.Equals(model.FullName) && u.Password.Equals(model.Password));
 
 
             // return null if user not found
@@ -59,7 +57,6 @@ namespace Wemuda_book_app.Service
             {
                 Id = user.Id,
                 FullName = user.FullName,
-                Username = user.Username,
                 Token = token,
             };
         }
@@ -75,8 +72,7 @@ namespace Wemuda_book_app.Service
                 Users = allUsers.Select(b => new AuthDTO
                 {
                     Id = b.Id,
-                    FullName = b.FullName,
-                    Username = b.Username
+                    FullName = b.FullName
                 })
             };
         }
@@ -89,12 +85,9 @@ namespace Wemuda_book_app.Service
 
             if (user == null) return new GetUserByIdResponseDto { StatusText = "UserNotFound" };
 
-            Console.WriteLine("UserService GetById: " + user.Username + ", " + user.BooksGoal);
-
             return new GetUserByIdResponseDto
             {
                 FullName = user.FullName,
-                Username = user.Username,
                 BooksRead = user.BooksRead,
                 BooksGoal = user.BooksGoal,
                 StatusText = "UserFound"
@@ -110,7 +103,7 @@ namespace Wemuda_book_app.Service
             var key = Encoding.UTF8.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("name", user.FullName), new Claim("username", user.Username) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("name", user.FullName), new Claim("username", user.FullName) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -137,15 +130,13 @@ namespace Wemuda_book_app.Service
                 return new CreateUserResponseDto
                 {
                     StatusText = "Invalid Email",
-                    FullName = "",
-                    Username = ""
+                    FullName = ""
                 };
             }
 
             var entity = _context.Users.Add(new User
             {
                 FullName = dto.FullName,
-                Username = dto.Username,
                 Email = dto.Email,
                 Password = dto.Password
             });
@@ -155,8 +146,7 @@ namespace Wemuda_book_app.Service
             return new CreateUserResponseDto
             {
                 StatusText = "User Created",
-                FullName = entity.Entity.FullName,
-                Username = entity.Entity.Username,
+                FullName = entity.Entity.FullName
             };
         
         }
