@@ -22,7 +22,7 @@ namespace Wemuda_book_app.Shared
     public class AuthenticateRequestDto
     {
         [Required]
-        public string FullName { get; set; }
+        public string Email { get; set; }
 
         [Required]
         public string Password { get; set; }

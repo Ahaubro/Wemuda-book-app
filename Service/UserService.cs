@@ -43,7 +43,7 @@ namespace Wemuda_book_app.Service
         public async Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model)
         {
 
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.FullName.Equals(model.FullName) && u.Password.Equals(model.Password));
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(model.Email) && u.Password.Equals(model.Password));
 
 
             // return null if user not found
