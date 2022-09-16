@@ -58,8 +58,7 @@ namespace Wemuda_book_app.Service
             return new AuthenticateResponseDto
             {
                 Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FullName = user.FullName,
                 Username = user.Username,
                 Token = token,
             };
@@ -76,8 +75,7 @@ namespace Wemuda_book_app.Service
                 Users = allUsers.Select(b => new AuthDTO
                 {
                     Id = b.Id,
-                    FirstName = b.FirstName,
-                    LastName = b.LastName,
+                    FullName = b.FullName,
                     Username = b.Username
                 })
             };
@@ -95,8 +93,7 @@ namespace Wemuda_book_app.Service
 
             return new GetUserByIdResponseDto
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FullName = user.FullName,
                 Username = user.Username,
                 BooksRead = user.BooksRead,
                 BooksGoal = user.BooksGoal,
@@ -113,7 +110,7 @@ namespace Wemuda_book_app.Service
             var key = Encoding.UTF8.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("name", user.FirstName), new Claim("username", user.Username) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()), new Claim("name", user.FullName), new Claim("username", user.Username) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -129,7 +126,7 @@ namespace Wemuda_book_app.Service
             Console.WriteLine(emailReciever);
             var emailRecievers = new List<string> { emailReciever };
             var emailSubject = "Welcome to Wemuda Books";
-            var emailBody = "Hello " + dto.FirstName + " " + dto.LastName + "\nWelcome to Wemuda Books\nHope you enjoy";
+            var emailBody = "Hello " + dto.FullName + "\nWelcome to Wemuda Books\nHope you enjoy";
 
             var email = new Email(emailRecievers, emailSubject, emailBody);
 
@@ -140,7 +137,7 @@ namespace Wemuda_book_app.Service
                 return new CreateUserResponseDto
                 {
                     StatusText = "Invalid Email",
-                    FirstName = "",
+                    FullName = "",
                     LastName = "",
                     Username = ""
                 };
@@ -148,8 +145,7 @@ namespace Wemuda_book_app.Service
 
             var entity = _context.Users.Add(new User
             {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
+                FullName = dto.FullName,
                 Username = dto.Username,
                 Email = dto.Email,
                 Password = dto.Password
@@ -160,8 +156,7 @@ namespace Wemuda_book_app.Service
             return new CreateUserResponseDto
             {
                 StatusText = "User Created",
-                FirstName = entity.Entity.FirstName,
-                LastName = entity.Entity.LastName,
+                FullName = entity.Entity.FullName,
                 Username = entity.Entity.Username,
             };
         

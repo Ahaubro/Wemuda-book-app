@@ -6,8 +6,7 @@ namespace Wemuda_book_app.Shared
     public class AuthDTO
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Token { get; set; }
@@ -16,8 +15,7 @@ namespace Wemuda_book_app.Shared
     public class UserDto
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; }
         public int BooksGoal { get; set;}
     }
@@ -35,8 +33,7 @@ namespace Wemuda_book_app.Shared
     public class AuthenticateResponseDto
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; }
         //public UserDto User { get; set; }
         public string Token { get; set; }
@@ -46,8 +43,7 @@ namespace Wemuda_book_app.Shared
     // CREATE REQUEST
     public class CreateUserRequestDto
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -57,7 +53,7 @@ namespace Wemuda_book_app.Shared
     // CREATE RESPONSE
     public class CreateUserResponseDto
     {
-        public string FirstName { get; set; }
+        public string FullName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
         public string StatusText { get; set; }
@@ -72,8 +68,7 @@ namespace Wemuda_book_app.Shared
     // GET BY ID RESPONSE
     public class GetUserByIdResponseDto
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Username { get; set; }
         public int BooksRead { get; set; }
         public int BooksGoal { get; set; }
