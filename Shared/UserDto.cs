@@ -54,7 +54,6 @@ namespace Wemuda_book_app.Shared
     public class CreateUserResponseDto
     {
         public string FullName { get; set; }
-        public string LastName { get; set; }
         public string Username { get; set; }
         public string StatusText { get; set; }
     }

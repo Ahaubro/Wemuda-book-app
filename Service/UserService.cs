@@ -138,7 +138,6 @@ namespace Wemuda_book_app.Service
                 {
                     StatusText = "Invalid Email",
                     FullName = "",
-                    LastName = "",
                     Username = ""
                 };
             }
