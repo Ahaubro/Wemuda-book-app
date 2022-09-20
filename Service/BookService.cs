@@ -14,7 +14,7 @@ namespace Wemuda_book_app.Service
     {
         Task<BookCreateResponseDto> Create(BookCreateRequestDto dto);
         Task<BookUpdateResponseDto> Update(BookUpdateRequestDto dto, int id, string bookId);
-        Task<BookDeleteResponseDto> Delete(int id);
+        Task<BookDeleteResponseDto> Delete(int userId, string bookId);
         Task<BookGetResponseDto> GetById(int id);
         Task<BookGetAllResponseDto> GetAll();
         Task<BookGetByUseridResponseDto> GetByUserid(int userId);
@@ -52,10 +52,7 @@ namespace Wemuda_book_app.Service
                     AverageRating = dto.AverageRating,
                     RatingCount = dto.RatingCount,
                     BookStatus = dto.BookStatus,
-               
-
-                    //Genre = dto.Genre,
-                    //ReleaseDate = dto.ReleaseDate
+ 
                 });
 
                 await _context.SaveChangesAsync();
@@ -66,9 +63,10 @@ namespace Wemuda_book_app.Service
                     Title = entity.Entity.Title,
                 };
             } 
-            else if (check.BookStatus.Equals("WantToRead")) 
+            else
             {
-                _context.Books.Remove(check);
+                check.BookStatus = dto.BookStatus;
+                _context.Books.Update(check);
                 await _context.SaveChangesAsync();
             }
 
@@ -76,16 +74,14 @@ namespace Wemuda_book_app.Service
         }
 
         // DELETE
-        public async Task<BookDeleteResponseDto> Delete(int id)
+        public async Task<BookDeleteResponseDto> Delete(int userId, string bookId)
         {
 
-            var book = await _context.Books.FirstOrDefaultAsync(d => d.Id == id);
+            var book = await _context.Books.FirstOrDefaultAsync(d => d.UserId == userId && d.BookId.Equals(bookId));
 
             //INSERT EXCEPTION
-
-
+            
             _context.Books.Remove(book);
-
             await _context.SaveChangesAsync();
 
             return new BookDeleteResponseDto

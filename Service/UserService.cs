@@ -177,9 +177,15 @@ namespace Wemuda_book_app.Service
         {
             User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == dto.UserId);
 
-            user.Password = dto.NewPassword;
+            if (user.Password.Equals(dto.Password))
+            {
+                user.Password = dto.NewPassword;
 
-            _context.Users.Update(user);
+                _context.Users.Update(user);
+            
+                await _context.SaveChangesAsync();
+            }
+            
 
             return new ChangePasswordResponseDto
             {
