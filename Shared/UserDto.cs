@@ -74,18 +74,6 @@ namespace Wemuda_book_app.Shared
         public string StatusText { get; set; }
     }
 
-    public class ChangePasswordRequestDto
-    {
-        public int UserId { get; set; }
-        public string Email { get; set; }
-        public string NewPassword { get; set; }
-    }
-
-    public class ChangePasswordResponseDto
-    {
-        public string StatusText { get; set; }
-    }
-
     public class SetBookGoalRequestDto
     {
         public int BooksGoal { get; set; }
@@ -97,6 +85,29 @@ namespace Wemuda_book_app.Shared
     }
 
     public class ResetBooksReadResponeDto
+    {
+        public string StatusText { get; set; }
+    }
+
+    public class UserForgotPasswordRequestDto
+    {
+        [Required]
+        public string Email { get; set; }
+
+    }
+
+    public class UserForgotPasswordResponseDto
+    {
+        public string StatusText { get; set; }
+    }
+    
+    public class UserResetPasswordRequestDto
+    {
+        [Required]
+        public string NewPassword { get; set; }
+    }
+
+    public class UserResetPasswordResponseDto
     {
         public string StatusText { get; set; }
     }

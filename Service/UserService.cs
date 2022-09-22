@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NuGet.Common;
@@ -20,9 +21,10 @@ namespace Wemuda_book_app.Service
         Task<GetUserByIdResponseDto> GetById(int id);
         Task<CreateUserResponseDto> Create(CreateUserRequestDto dto);
         Task<DeleteUserResponseDto> Delete(int id);
-        Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto);
         Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId);
         Task<ResetBooksReadResponeDto> ResetBooksRead(int userId);
+        Task<UserForgotPasswordResponseDto> ForgotPassword(UserForgotPasswordRequestDto dto);
+        Task<UserResetPasswordResponseDto> ResetPassword(UserResetPasswordRequestDto dto, string token);
     }
     public class UserService : IUserService
     {
@@ -30,12 +32,14 @@ namespace Wemuda_book_app.Service
         private readonly AppSettings _appSettings;
         private readonly ApplicationDBContext _context;
         private readonly IMailService _mailService;
+        private readonly IPasswordHelper _passwordHelper;
 
-        public UserService(IOptions<AppSettings> appSettings, ApplicationDBContext context, IOptions<MailSettings> mailSettings)
+        public UserService(IOptions<AppSettings> appSettings, ApplicationDBContext context, IOptions<MailSettings> mailSettings, IPasswordHelper passwordHelper)
         {
             _appSettings = appSettings.Value;
             _context = context;
             _mailService = new MailService(mailSettings);
+            _passwordHelper = passwordHelper;
         }
 
 
@@ -172,21 +176,6 @@ namespace Wemuda_book_app.Service
 
         }
 
-        
-        public async Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto)
-        {
-            User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == dto.UserId);
-
-            user.Password = dto.NewPassword;
-
-            _context.Users.Update(user);
-
-            return new ChangePasswordResponseDto
-            {
-                StatusText = "PasswordChanged"
-            };
-        }
-
         public async Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId)
         {
             User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == userId);
@@ -219,6 +208,58 @@ namespace Wemuda_book_app.Service
             {
                 StatusText = "ResetBooksRead"
             };
+        }
+
+        public async Task<UserForgotPasswordResponseDto> ForgotPassword(UserForgotPasswordRequestDto dto)
+        {
+            var user = await _context.Users.Where(u => u.Email == dto.Email).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return new UserForgotPasswordResponseDto { StatusText = "UserNotFoundException" };
+            }
+
+            var passwordResetToken = _passwordHelper.GenerateRandomString(40);
+
+            user.ResetPasswordToken = passwordResetToken;
+            user.ResetPasswordTokenExpire = DateTime.Now.AddDays(2);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            var emailBody = $"localhost:3000/reset?token={passwordResetToken}";
+            var email = new Email(new List<string> { dto.Email }, "Reset password here", emailBody); 
+
+
+            var isMailSent = await _mailService.SendAsync(email, new CancellationToken());
+
+            if (isMailSent == false)
+            {
+                return new UserForgotPasswordResponseDto { StatusText = "MailNotSentException" };
+            }
+
+            return new UserForgotPasswordResponseDto { StatusText = "MailSent" };
+        }
+
+        public async Task<UserResetPasswordResponseDto> ResetPassword(UserResetPasswordRequestDto dto, string token)
+        {
+            var user = await _context.Users.Where(u => u.ResetPasswordToken == token).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return new UserResetPasswordResponseDto { StatusText = "InvalidToken" };
+            }
+
+            if (user.ResetPasswordTokenExpire < DateTime.Now)
+            {
+                return new UserResetPasswordResponseDto { StatusText = "TokenExpired" };
+            }
+
+            user.Password = dto.NewPassword;
+            user.ResetPasswordToken = null;
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            return new UserResetPasswordResponseDto { StatusText = "PasswordChanged" };
         }
 
     }

@@ -70,14 +70,6 @@ namespace Wemuda_book_app.Controllers
             return await _userService.Delete(id);
         }
 
-        //Change password
-        [Produces("application/json")]
-        [HttpPost("changePassword")]
-        public async Task<ChangePasswordResponseDto> ChangePassword([FromBody] ChangePasswordRequestDto dto)
-        {
-            return await _userService.ChangePassword(dto);
-        }
-
         [Produces("application/json")]
         [HttpPatch("setBooksGoal/{userId:int}")]
         public async Task<SetBookGoalResponseDto> SetBooksGoal([FromBody] SetBookGoalRequestDto dto, int userId)
@@ -91,6 +83,20 @@ namespace Wemuda_book_app.Controllers
         public async Task<ResetBooksReadResponeDto> ResetBooksRead(int userId)
         {
             return await _userService.ResetBooksRead(userId);
+        }
+
+        [Produces("application/json")]
+        [HttpPatch("forgotPassword")]
+        public async Task<UserForgotPasswordResponseDto> ForgotPassword(UserForgotPasswordRequestDto dto)
+        {
+            return await _userService.ForgotPassword(dto);
+        }
+
+        [Produces("application/json")]
+        [HttpPost("resetPassword")]
+        public async Task<UserResetPasswordResponseDto> ResetPassword([FromBody] UserResetPasswordRequestDto dto, [FromQuery] string token)
+        {
+            return await _userService.ResetPassword(dto, token);
         }
 
     }

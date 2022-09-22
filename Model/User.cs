@@ -13,6 +13,7 @@ namespace Wemuda_book_app.Model
         public int MinutesRead { get; set; }
         public int BooksRead { get; set; }
         public int BooksGoal { get; set; }
-
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordTokenExpire { get; set; }
     }
 }
