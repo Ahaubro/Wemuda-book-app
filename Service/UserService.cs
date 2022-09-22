@@ -176,6 +176,30 @@ namespace Wemuda_book_app.Service
 
         }
 
+<<<<<<< HEAD
+=======
+        
+        public async Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto)
+        {
+            User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == dto.UserId);
+
+            if (user.Password.Equals(dto.Password))
+            {
+                user.Password = dto.NewPassword;
+
+                _context.Users.Update(user);
+            
+                await _context.SaveChangesAsync();
+            }
+            
+
+            return new ChangePasswordResponseDto
+            {
+                StatusText = "PasswordChanged"
+            };
+        }
+
+>>>>>>> 651700686654f699be1ee1f09904f46c715833df
         public async Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId)
         {
             User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == userId);

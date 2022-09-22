@@ -40,10 +40,10 @@ namespace Wemuda_book_app.Controllers
 
         //DELETE BOOK
         [Produces("application/json")]
-        [HttpDelete("{id:int}")]
-        public async Task<BookDeleteResponseDto> Delete(int id)
+        [HttpDelete("{userId:int}/{bookId}")]
+        public async Task<BookDeleteResponseDto> Delete(int userId, string bookId)
         { 
-            return await _bookService.Delete(id);
+            return await _bookService.Delete(userId, bookId);
         }
 
 
