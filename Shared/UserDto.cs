@@ -77,10 +77,7 @@ namespace Wemuda_book_app.Shared
     public class ChangePasswordRequestDto
     {
         public int UserId { get; set; }
-<<<<<<< HEAD
-=======
 
->>>>>>> 651700686654f699be1ee1f09904f46c715833df
         public string Password { get; set; }
         public string NewPassword { get; set; }
     }

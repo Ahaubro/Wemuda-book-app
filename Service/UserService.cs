@@ -21,6 +21,7 @@ namespace Wemuda_book_app.Service
         Task<GetUserByIdResponseDto> GetById(int id);
         Task<CreateUserResponseDto> Create(CreateUserRequestDto dto);
         Task<DeleteUserResponseDto> Delete(int id);
+        Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto);
         Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId);
         Task<ResetBooksReadResponeDto> ResetBooksRead(int userId);
         Task<UserForgotPasswordResponseDto> ForgotPassword(UserForgotPasswordRequestDto dto);
@@ -176,8 +177,6 @@ namespace Wemuda_book_app.Service
 
         }
 
-<<<<<<< HEAD
-=======
         
         public async Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto)
         {
@@ -199,7 +198,6 @@ namespace Wemuda_book_app.Service
             };
         }
 
->>>>>>> 651700686654f699be1ee1f09904f46c715833df
         public async Task<SetBookGoalResponseDto> SetBooksGoal(SetBookGoalRequestDto dto, int userId)
         {
             User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == userId);
