@@ -128,6 +128,17 @@ namespace Wemuda_book_app.Service
         // CREATE
         public async Task<CreateUserResponseDto> Create(CreateUserRequestDto dto)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(d => d.Email == dto.Email);
+
+            if(user != null)
+            {
+                return new CreateUserResponseDto
+                {
+                    StatusText = "EmailAlreadyInUse",
+                    FullName = ""
+                };
+            }
+
             var confirmEmailToken = _passwordHelper.GenerateRandomString(40);
 
             var emailReciever = dto.Email;
