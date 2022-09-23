@@ -125,4 +125,9 @@ namespace Wemuda_book_app.Shared
         public string StatusText { get; set; }
     }
 
+    public class ConfirmEmailResponseDto
+    {
+        public string StatusText { get; set; }
+    }
+
 }

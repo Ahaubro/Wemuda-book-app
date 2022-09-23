@@ -106,5 +106,12 @@ namespace Wemuda_book_app.Controllers
             return await _userService.ResetPassword(dto, token);
         }
 
+        [Produces("application/json")]
+        [HttpPost("confirmEmail")]
+        public async Task<ConfirmEmailResponseDto> ConfirmEmail([FromQuery] string token)
+        {
+            return await _userService.ConfirmEmail(token);
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,6 +27,7 @@ namespace Wemuda_book_app.Service
         Task<ResetBooksReadResponeDto> ResetBooksRead(int userId);
         Task<UserForgotPasswordResponseDto> ForgotPassword(UserForgotPasswordRequestDto dto);
         Task<UserResetPasswordResponseDto> ResetPassword(UserResetPasswordRequestDto dto, string token);
+        Task<ConfirmEmailResponseDto> ConfirmEmail(string token);
     }
     public class UserService : IUserService
     {
@@ -52,6 +54,8 @@ namespace Wemuda_book_app.Service
 
             // return null if user not found
             if (user == null) return new AuthenticateResponseDto { };
+
+            if (!user.EmailConfirmed) return new AuthenticateResponseDto { };
 
             if (!_passwordHelper.VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
             {
@@ -124,11 +128,13 @@ namespace Wemuda_book_app.Service
         // CREATE
         public async Task<CreateUserResponseDto> Create(CreateUserRequestDto dto)
         {
+            var confirmEmailToken = _passwordHelper.GenerateRandomString(40);
+
             var emailReciever = dto.Email;
-            Console.WriteLine(emailReciever);
             var emailRecievers = new List<string> { emailReciever };
             var emailSubject = "Welcome to Wemuda Books";
-            var emailBody = "Hello " + dto.FullName + "\nWelcome to Wemuda Books\nHope you enjoy";
+            var emailBody = "Hello " + dto.FullName + "<br>Welcome to Wemuda Books<br>Confirm your email here:<br>" +
+                $"http://localhost:3000/confirmEmail?token={confirmEmailToken}";
 
             var email = new Email(emailRecievers, emailSubject, emailBody);
 
@@ -150,7 +156,9 @@ namespace Wemuda_book_app.Service
                 FullName = dto.FullName,
                 Email = dto.Email,
                 PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
+                PasswordSalt = passwordSalt,
+                ConfirmEmailToken = confirmEmailToken,
+                EmailConfirmed = false
             });
 
             await _context.SaveChangesAsync();
@@ -299,6 +307,22 @@ namespace Wemuda_book_app.Service
             await _context.SaveChangesAsync();
 
             return new UserResetPasswordResponseDto { StatusText = "PasswordChanged" };
+        }
+
+        public async Task<ConfirmEmailResponseDto> ConfirmEmail(string token)
+        {
+            var user = await _context.Users.Where(u => u.ConfirmEmailToken == token).FirstOrDefaultAsync();
+
+            if (user == null) return new ConfirmEmailResponseDto { StatusText = "InvalidToken" };
+
+            if (user.EmailConfirmed) return new ConfirmEmailResponseDto { StatusText = "EmailAlreadyConfirmed" };
+
+            user.EmailConfirmed = true;
+
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+
+            return new ConfirmEmailResponseDto { StatusText = "EmailConfirmed" };
         }
 
     }

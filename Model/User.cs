@@ -6,7 +6,6 @@ namespace Wemuda_book_app.Model
     {
         public int Id { get; set; }
         public string FullName { get; set; }
-
         [JsonIgnore]
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
@@ -16,5 +15,7 @@ namespace Wemuda_book_app.Model
         public int BooksGoal { get; set; }
         public string? ResetPasswordToken { get; set; }
         public DateTime? ResetPasswordTokenExpire { get; set; }
+        public string ConfirmEmailToken { get; set; }
+        public bool EmailConfirmed { get; set; }
     }
 }
