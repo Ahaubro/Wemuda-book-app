@@ -249,8 +249,8 @@ namespace Wemuda_book_app.Service
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            var emailBody = $"localhost:3000/reset?token={passwordResetToken}";
-            var email = new Email(new List<string> { dto.Email }, "Reset password here", emailBody); 
+            var emailBody = $"http://localhost:3000/reset?token={passwordResetToken}";
+            var email = new Email(new List<string> { dto.Email }, "Reset password here", emailBody);
 
 
             var isMailSent = await _mailService.SendAsync(email, new CancellationToken());
