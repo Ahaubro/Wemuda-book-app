@@ -48,11 +48,15 @@ namespace Wemuda_book_app.Service
         public async Task<AuthenticateResponseDto> Authenticate(AuthenticateRequestDto model)
         {
 
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(model.Email) && u.Password.Equals(model.Password));
-
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(model.Email));
 
             // return null if user not found
-            if (user == null) return new AuthenticateResponseDto {  };
+            if (user == null) return new AuthenticateResponseDto { };
+
+            if (!_passwordHelper.VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
+            {
+                return new AuthenticateResponseDto { };
+            }
 
             // authentication successful so generate jwt token
             var token = generateJwtToken(user);
@@ -139,11 +143,14 @@ namespace Wemuda_book_app.Service
                 };
             }
 
+            var (passwordHash, passwordSalt) = _passwordHelper.CreateHash(dto.Password);
+
             var entity = _context.Users.Add(new User
             {
                 FullName = dto.FullName,
                 Email = dto.Email,
-                Password = dto.Password
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt
             });
 
             await _context.SaveChangesAsync();
@@ -182,15 +189,21 @@ namespace Wemuda_book_app.Service
         {
             User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == dto.UserId);
 
-            if (user.Password.Equals(dto.Password))
-            {
-                user.Password = dto.NewPassword;
+            if (user == null) return new ChangePasswordResponseDto { StatusText = "UserNotFound" };
 
-                _context.Users.Update(user);
-            
-                await _context.SaveChangesAsync();
+            if (!_passwordHelper.VerifyPassword(dto.Password, user.PasswordHash, user.PasswordSalt))
+            {
+                return new ChangePasswordResponseDto { StatusText = "IncorrectPassword" };
             }
+
+            var (passwordHash, passwordSalt) = _passwordHelper.CreateHash(dto.NewPassword);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _context.Users.Update(user);
             
+            await _context.SaveChangesAsync();
 
             return new ChangePasswordResponseDto
             {
@@ -276,7 +289,11 @@ namespace Wemuda_book_app.Service
                 return new UserResetPasswordResponseDto { StatusText = "TokenExpired" };
             }
 
-            user.Password = dto.NewPassword;
+            var (passwordHash, passwordSalt) = _passwordHelper.CreateHash(dto.NewPassword);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
             user.ResetPasswordToken = null;
             _context.Update(user);
             await _context.SaveChangesAsync();

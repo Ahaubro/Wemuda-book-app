@@ -8,7 +8,8 @@ namespace Wemuda_book_app.Model
         public string FullName { get; set; }
 
         [JsonIgnore]
-        public string Password { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
         public string Email { get; set; }
         public int MinutesRead { get; set; }
         public int BooksRead { get; set; }
