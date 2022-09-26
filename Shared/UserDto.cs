@@ -34,7 +34,7 @@ namespace Wemuda_book_app.Shared
         public string FullName { get; set; }
         //public UserDto User { get; set; }
         public string Token { get; set; }
-
+        public string StatusText { get; set; }
     }
 
     // CREATE REQUEST

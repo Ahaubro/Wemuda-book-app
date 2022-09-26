@@ -53,13 +53,13 @@ namespace Wemuda_book_app.Service
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Email.Equals(model.Email));
 
             // return null if user not found
-            if (user == null) return new AuthenticateResponseDto { };
+            if (user == null) return new AuthenticateResponseDto { StatusText = "UserNotFound" };
 
-            if (!user.EmailConfirmed) return new AuthenticateResponseDto { };
+            if (!user.EmailConfirmed) return new AuthenticateResponseDto { StatusText = "EmailNotConfirmed" };
 
             if (!_passwordHelper.VerifyPassword(model.Password, user.PasswordHash, user.PasswordSalt))
             {
-                return new AuthenticateResponseDto { };
+                return new AuthenticateResponseDto { StatusText = "IncorrectPassword" };
             }
 
             // authentication successful so generate jwt token
@@ -71,6 +71,7 @@ namespace Wemuda_book_app.Service
                 Id = user.Id,
                 FullName = user.FullName,
                 Token = token,
+                StatusText = "LoggedIn"
             };
         }
 
