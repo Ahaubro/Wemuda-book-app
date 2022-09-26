@@ -30,6 +30,7 @@ namespace Wemuda_book_app.Service
             var entity = _context.Reviews.Add(new Review
             {
                 Id = dto.Id,
+                Title = dto.Title,
                 Content = dto.Content,
                 Rating = dto.Rating,
                 BookId = dto.BookId,
@@ -57,6 +58,7 @@ namespace Wemuda_book_app.Service
                 Reviews = allReviews.Select(b => new ReviewDto
                 {
                     Id = b.Id,
+                    Title = b.Title,
                     Content = b.Content,
                     Rating = b.Rating,
                     BookId = b.BookId,
@@ -77,6 +79,7 @@ namespace Wemuda_book_app.Service
                 Reviews = reviews.Select(b => new ReviewDto
                 {
                     Id = b.Id,
+                    Title = b.Title,
                     Content = b.Content,
                     Rating = b.Rating,
                     UserId = b.UserId,
