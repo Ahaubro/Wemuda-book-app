@@ -191,8 +191,7 @@ namespace Wemuda_book_app.Service
             var user = await _context.Users.FirstOrDefaultAsync(d => d.Id == id);
 
             //INSERT EXCEPTION
-
-
+            
             _context.Users.Remove(user);
 
             await _context.SaveChangesAsync();
