@@ -190,8 +190,18 @@ namespace Wemuda_book_app.Service
 
             var user = await _context.Users.FirstOrDefaultAsync(d => d.Id == id);
 
-            //INSERT EXCEPTION
-            
+            if (user == null) return new DeleteUserResponseDto { StatusText = "UserNotFound" };
+
+            var userBooks = _context.Books.AsNoTracking().Where(b => b.UserId == id);
+
+            foreach (var book in userBooks)
+                _context.Books.Remove(book);
+
+            var userStatusUpdates = _context.StatusUpdates.AsNoTracking().Where(b => b.UserId == id);
+
+            foreach (var statusUpdate in userStatusUpdates)
+                _context.StatusUpdates.Remove(statusUpdate);
+
             _context.Users.Remove(user);
 
             await _context.SaveChangesAsync();
@@ -203,7 +213,7 @@ namespace Wemuda_book_app.Service
 
         }
 
-        
+
         public async Task<ChangePasswordResponseDto> ChangePassword(ChangePasswordRequestDto dto)
         {
             User user = await _context.Users.FirstOrDefaultAsync(d => d.Id == dto.UserId);
